@@ -7,7 +7,10 @@ A simple yet robust web app to assign tasks to a specif employee. This is a secu
 ![Screenshot 2023-08-09 140152](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/e4c00dd1-60c7-46d5-9a60-41277d78f81a)
 ## Employee dashboard and scores, when task is completed the employee gets 5 scores.
 
-![Screenshot 2023-08-09 140236](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/43b63256-b8f8-4527-b796-34cd1094f146)
+![Screenshot 2023-08-11 093626](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/3ee5b81c-4019-4b36-92a2-1643145a297a)
+## Every Employee Name Gets A Random Unique Avatar based on their name.
+![Screenshot 2023-08-11 103149](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/c6be822f-56ca-4f24-8765-e6a9603db566)
+
 ## Tasks aka Todo, tasks are assigned by admin. Admin assignes multiple tasks to a one employee, and that task only appear to that employee not other employees can see someone else tasks.
 ![Screenshot 2023-08-09 140245](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/4f4d8ce4-3c73-4185-8562-0da775e8c6b0)
 ## The News section is under development at a moment
@@ -19,7 +22,8 @@ A simple yet robust web app to assign tasks to a specif employee. This is a secu
 ## Authentiation key before accessing admin panel
 ![Screenshot 2023-08-09 140447](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/bdfe5a9e-ae32-4680-a25b-a9e1388afcc7)
 ## Main page that appears on Admin Dashboard, this is still under development
-![Screenshot 2023-08-09 140051](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/80dc22de-fb54-41de-86ba-17e86d300547)
+![Screenshot 2023-08-11 103105](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/9ac08eb6-ba2e-4875-9129-6e429522c393)
+
 ## Employees Database
 ![Screenshot 2023-08-09 140059](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/955ce1e9-b66c-4834-bfb8-f9a6b8bec50c)
 ## Add tasks for a specific employee id
@@ -30,6 +34,9 @@ A simple yet robust web app to assign tasks to a specif employee. This is a secu
 ## The view task option shows the pending employees tasks, the tasks that are not done appers here, and admin can send email to that employeee from here.
 ![Screenshot 2023-08-09 140117](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/25b33c18-a1f4-4760-8c99-97ce0b5053d0)
 
+# Config
+Before running the app, configure the security and email parameters
+![Screenshot 2023-08-11 103659](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/74d6e2d4-1d21-4aec-9b80-c72787cec218)
 
 # Question
 if you have any questions or you want the same app for your business with some modifications, reach me on Instagram or Telegram @coding_memz

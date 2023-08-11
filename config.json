@@ -1,0 +1,11 @@
+{
+  "SECRET_KEY" : "MySuperSecretKey",
+  "ALCHEMY_DB_URI" : "sqlite:///employee.db",
+  "ADMIN_AUTH_KEY" : "Admin123",
+  "SMTP_SERVER" : "smtp.yourserver.com",
+  "SMTP_PORT" : 587,
+  "SMTP_USERNAME" : "Cyber Dioxide",
+  "SMTP_PASSWD" : "super-secret",
+  "SENDER_EMAIL": "admin@cyberdioxide.com",
+  "EMAIL_SUBJECT" : "Task Reminder"
+}

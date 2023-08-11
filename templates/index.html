@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css">
+    <title>Dashboard</title>
+    <style>
+        .news-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .news-image img {
+            width: 150px;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-description {
+            color: #4a5568;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+        }
+        * {
+            color: aliceblue;
+        }
+        .sidebar-link.active {
+            background-color: #555;
+            color: #fff;
+        }
+        /* Add this to your existing style block */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #282626;
+        }
+        task-table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-table thead {
+            background-color: #555;
+            color: white;
+        }
+
+        .task-table th,
+        .task-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .task-table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .task-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        #sidebar {
+            width: 240px;
+            height: 100vh;
+            background-color: rgba(38, 36, 36, 0.51);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .email {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+        .sidebar-link {
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #ccc;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+        .sidebar-link:hover {
+            background-color: #555;
+            color: #fff;
+        }
+        #content {
+            margin-left: 260px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+        .message-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.1);
+            background-color: #d36a6a;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .message p {
+            margin: 0;
+            padding: 5px 10px;
+        }
+        .logout-link {
+            color: #fffaf9; /* Change color to your preference */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+
+
+    </style>
+</head>
+<body style="background: #962d44">
+<div class="message-container" data-timeout="5000"> <!-- 5000 milliseconds = 5 seconds -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="message">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+</div>
+
+
+<div id="sidebar">
+    <div class="sidebar-header">
+        <img class="avatar" src="{{ avatar_url }}" alt="avatar">
+        <div class="name">{{employee.name}}</div>
+        <div class="email">{{employee.email}}</div>
+    </div>
+    <a id="dashboard" class="sidebar-link active" onclick="showDashboard()">
+        <div class="flex items-center px-4 py-3  cursor-pointer">
+            <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 11H5M19 11C20.1046 11 21 11.8954 21 13V19C21 20.1046 20.1046 21 19 21H5C3.89543 21 3 20.1046 3 19V13C3 11.8954 3.89543 11 5 11M19 11V9C19 7.89543 18.1046 7 17 7M5 11V9C5 7.89543 5.89543 7 7 7M7 7V5C7 3.89543 7.89543 3 9 3H15C16.1046 3 17 3.89543 17 5V7M7 7H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span class="mx-2 font-medium">Dashboard</span>
+        </div>
+    </a>
+    <a id="todo" class="sidebar-link" onclick="showTodo()">
+        <div class="flex items-center px-4 py-3 cursor-pointer">
+            <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm4-5H7v-1h10v1zm0-3H7V9h10v1zm0-3H7V6h10v1z" fill="currentColor"/>
+            </svg>
+            <span class="mx-2 font-medium">To-Do</span>
+        </div>
+    </a>
+    <a id="news" class="sidebar-link" onclick="showNews()">
+        <div class="flex items-center px-4 py-3 cursor-pointer">
+            <svg class="w-5 h-5 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 4H5V19H3V4ZM8 8H10V19H8V8ZM13 12H15V19H13V12ZM18 6H20V19H18V6Z" fill="currentColor"/>
+            </svg>
+            <span class="mx-2 font-medium">News</span>
+        </div>
+    </a>
+    <a id="learn" class="sidebar-link" onclick="showLearn()">
+        <div class="flex items-center px-4 py-3 cursor-pointer">
+            <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.646 11.354a.5.5 0 010-.708L8.293 6.646a.5.5 0 11.708.708L5.707 11l3.293 3.646a.5.5 0 01-.708.708L4.646 11.354zM11 12.5a.5.5 0 01-.5-.5V8a.5.5 0 111 0v4a.5.5 0 01-.5.5z" clip-rule="evenodd" />
+            </svg>
+            <span class="mx-2 font-medium">Learn</span>
+        </div>
+    </a>
+</div>
+
+<div id="content">
+    <h1>Welcome John Doe</h1>
+</div>
+
+<script>
+    const contentDiv = document.getElementById('content');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            sidebarLinks.forEach(item => {
+                item.classList.remove('active');
+            });
+            link.classList.add('active');
+        });
+    });
+
+    // Show the Dashboard content by default
+    showDashboard();
+
+    function showDashboard() {
+        showDashboardContent()
+    }
+
+    function showTodo() {
+        document.getElementById('content').innerHTML = `
+        <h1 class="text-xl font-semibold mb-4">To-Do</h1>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Done</th>
+                </tr>
+            </thead>
+            <tbody id="taskTableBody">
+                {% for task in tasks %}
+                <tr>
+                    <td class="border px-4 py-2">{{ task.description }}</td>
+                    <td class="border px-4 py-2">{{ task.due_date }}</td>
+                    <td>
+
+{% if not task.is_done %}
+<form action="{{ url_for('mark_task_done', task_id=task.id) }}" method="post">
+    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Mark as Done</button>
+</form>
+{% else %}
+Done
+{% endif %}
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    `;
+    }
+
+
+    setTimeout(function() {
+        const flashMessages = document.querySelectorAll('.message');
+        flashMessages.forEach(message => {
+            message.style.display = 'none';
+        });
+    }, 5000);
+
+
+
+    function showNews() {
+        document.getElementById('content').innerHTML = `
+        <h1 class="text-xl font-semibold mb-4">News</h1>
+        <div class="news-container">
+        {% for news in events %}
+            <div class="news-card">
+                <div class="news-image">
+                    <img src="{{news.image_url}}" alt="{{news.title}}">
+                </div>
+                <div class="news-content">
+                    <h3 class="news-title">{{news.title}}</h3>
+                    <p class="news-description">{{news.description}}</p>
+                    <p class="news-description">{{news.date}}</p>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    `;
+    }
+
+
+
+    function generateLearnCard(title, description, link) {
+        return `
+        <div class="p-4 rounded-lg shadow-md" style="background-color: #4a5568">
+            <h2 class="text-xl font-semibold mb-2">${title}</h2>
+            <p>${description}</p>
+            <a href="${link}" class="mt-2 text-blue-500 hover:underline">Watch Tutorial</a>
+        </div>
+    `;
+    }
+    function showLearn() {
+        contentDiv.innerHTML = `
+        <h1 class="text-xl font-semibold mb-4">Learn</h1>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            ${generateLearnCard("Introduction to Programming", "Learn the basics of programming with this comprehensive course.", "https://example.com/intro-programming")}
+            ${generateLearnCard("Web Development Fundamentals", "Master the foundations of web development and create dynamic websites.", "https://example.com/web-dev-fundamentals")}
+            ${generateLearnCard("Machine Learning Essentials", "Dive into the world of machine learning and AI algorithms.", "https://example.com/machine-learning")}
+            ${generateLearnCard("Digital Marketing Strategy", "Learn how to create effective digital marketing campaigns.", "https://example.com/digital-marketing")}
+            ${generateLearnCard("Creative Writing Workshop", "Unlock your creative potential with this engaging writing workshop.", "https://example.com/creative-writing")}
+        </div>
+    `;
+    }
+
+    function showDashboardContent() {
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = `
+        <h2 class="text-2xl font-semibold mb-6">Dashboard</h2>
+        <div class="grid grid-cols-1 gap-6">
+            <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+                <h3 class="text-xl font-semibold mb-2">Scores</h3>
+                <p class="text-gray-400">{{ employee.points }}</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+                <h3 class="text-xl font-semibold mb-2">Tasks Completed</h3>
+                <p class="text-gray-400">{{ employee.points / 5 }}</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+                <h3 class="text-xl font-semibold mb-2">Tasks Failed</h3>
+                <p class="text-gray-400">{{ tasks|length - (employee.points / 5) }}</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+                <h3 class="text-xl font-semibold mb-2">Total Tasks Assigned</h3>
+                <p class="text-gray-400">{{ tasks|length }}</p>
+            </div>
+            <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+                <h3 class="text-xl font-semibold mb-2">Role</h3>
+                <p class="text-gray-400">{{ employee.role }}</p>
+            </div>
+            <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+
+        </div>
+    `;
+    }
+
+</script>
+
+</body>
+</html>

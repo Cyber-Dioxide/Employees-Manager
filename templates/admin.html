@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css">
+  <title>Admin Dashboard</title>
+  <style>
+    /* Your custom CSS styles here */
+    .send-email-button {
+      background-color: #3490dc;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .send-email-button:hover {
+      background-color: #2779bd;
+    }
+    .add-event-form {
+      display: none;
+    }
+    .sidebar-link {
+      margin-bottom: 10px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: #ccc;
+      text-decoration: none;
+      transition: background-color 0.3s, color 0.3s;
+      cursor: pointer;
+    }
+    .sidebar-link:hover {
+      background-color: #555;
+      color: #fff;
+    }
+    .content-area {
+      margin-left: 240px;
+      padding: 20px;
+    }
+    .content-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    #content {
+      margin-left: 260px;
+      padding: 20px;
+      transition: margin-left 0.3s;
+    }
+    #sidebar {
+      width: 240px;
+      height: 100vh;
+      background-color: rgba(38, 36, 36, 0.51);
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.3s;
+    }
+
+    * {
+      color: aliceblue;
+    }
+    .sidebar-link.active {
+      background-color: #555;
+      color: #fff;
+    }
+    .sidebar-link.active {
+      background-color: #555;
+      color: #fff;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+    .add-event-form {
+      background-color: #333030;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+      width: 50%;
+    }
+
+    .add-event-form h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .add-event-form label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .add-event-form input,
+    .add-event-form textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      color: black;
+    }
+
+    .add-event-form button {
+      background-color: #3490dc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .add-event-form button:hover {
+      background-color: #2779bd;
+    }
+
+    th {
+      background-color: #282626;
+    }
+    tr {
+      background-color: #4a5568;
+    }
+    tr:hover {
+      background-color: #4b8aa1;
+    }
+  .message-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.1);
+      background-color: #d36a6a;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .message p {
+      margin: 0;
+      padding: 5px 10px;
+    }
+
+  </style>
+</head>
+<body style="background: #962d44">
+<div class="message-container" data-timeout="5000"> <!-- 5000 milliseconds = 5 seconds -->
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="message">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+</div>
+<div id="sidebar" class="bg-gray-900 text-white h-screen w-64 fixed top-0 left-0 p-4">
+  <h2 class="text-xl font-semibold mb-4">Admin Dashboard</h2>
+  <a href="#" class="sidebar-link" onclick="showDashboard()">
+    <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path d="M10 3.999a1 1 0 00-.895.553 10.946 10.946 0 00-3.688 0A1 1 0 005 4a10.946 10.946 0 00-.553.895A1 1 0 004 6v3.775a8 8 0 104 0V6a1 1 0 00-.447-.105A1 1 0 006 6a8.946 8.946 0 00-.395 2.552 1 1 0 001.105 1.106 8.946 8.946 0 002.552-.395A1 1 0 0010 11a8.946 8.946 0 002.552.395 1 1 0 001.105-1.106A8.946 8.946 0 0014 6a1 1 0 00-.447-.105A1 1 0 0012 6a10.946 10.946 0 00-.895-.553A1 1 0 0010 4a10.946 10.946 0 00-.553-.895 1 1 0 00-.895-.105V6a1 1 0 00.553.895 10.946 10.946 0 003.688 0A1 1 0 0015 6V4.105a1 1 0 00-.895-.105 10.946 10.946 0 00-3.688 0A1 1 0 0010 4v-2a1 1 0 00-.105-.896A1 1 0 009 0a10.946 10.946 0 00-.553.895A1 1 0 008 2v3.775z" />
+      <path d="M8.293 10.293a1 1 0 00-1.414 0L5 11.586l-.293-.293a1 1 0 00-1.414 1.414l1 1a1 1 0 001.414 0L8 13.414l3.293-3.293a1 1 0 10-1.414-1.414l-2 2z" />
+    </svg>
+
+    Dashboard
+  </a>
+  <a href="#" class="sidebar-link" onclick="showEmployees()">
+    <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M2 3a1 1 0 011-1h14a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V3zm2 1v10h12V4H4z" clip-rule="evenodd" />
+      <path d="M7 11a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" />
+    </svg>
+
+
+    Employees
+  </a>
+  <a href="#" class="sidebar-link" onclick="showAddTask()">
+    <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm10 0h2a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1h2V1a1 1 0 112 0v1h4V1a1 1 0 112 0v1zM6 5a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 4a1 1 0 100 2h8a1 1 0 100-2H7zm-1 4a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1z" clip-rule="evenodd" />
+    </svg>
+
+    Add Task
+  </a>
+  <a href="#" class="sidebar-link" onclick="showAddEmployees()">
+    <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M6 4a3 3 0 11-6 0 3 3 0 016 0zM10 11a3 3 0 100-6 3 3 0 000 6zm4 3a2 2 0 11-4 0 2 2 0 014 0zm4-3a3 3 0 11-6 0 3 3 0 016 0zm-1 6a2 2 0 100-4 2 2 0 000 4zm-8 0a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+    </svg>
+
+    Add Employees
+  </a>
+  <a href="#" class="sidebar-link" onclick="showAddAdmin()">
+    <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.105-6.972a.5.5 0 00-.002 0h-.001a.5.5 0 00-.442.383l-.093.498-.504.083a.5.5 0 00-.263.876l.363.36-.082.503a.5.5 0 00.294.524.498.498 0 00.566-.122l.407-.405.407.404a.498.498 0 00.565.122.5.5 0 00.293-.524l-.082-.504.363-.36a.5.5 0 00-.262-.876l-.504-.082-.094-.498a.5.5 0 00-.444-.383h-.001a.5.5 0 00-.002 0z" clip-rule="evenodd" />
+    </svg>
+
+
+    View Tasks
+  </a>
+  <a href="#" class="sidebar-link" onclick="showNewsEvent()">
+    <svg class="w-6 h-6 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm1.293-5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L5.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+<!--    <svg>-->
+<!--    <path fill-rule="evenodd" d="M13.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L16.586 10H2a1 1 0 010-2h14.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>-->
+    </svg>
+    Share News
+  </a>
+</div>
+<div id="content" class="content-area">
+  <!-- Main content area -->
+  <h1 id="content-title" class="content-title">Admin Dashboard</h1>
+  <div id="dashboard-content">
+    <div class="grid grid-cols-1 gap-6">
+      <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+        <h3 class="text-xl font-semibold mb-2">Employees Count</h3>
+        <p class="text-gray-400">{{ employees|length }}</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+        <h3 class="text-xl font-semibold mb-2">Total Tasks Assigned</h3>
+        <p class="text-gray-400">{{ tasks_all|length }}</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+        <h3 class="text-xl font-semibold mb-2">Tasks Pending</h3>
+        <p class="text-gray-400">{{ tasks|length }}</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+        <h3 class="text-xl font-semibold mb-2">News Shared</h3>
+        <p class="text-gray-400">{{ events|length }}</p>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-4 hover:bg-gray-700 cursor-pointer transition-colors duration-300">
+        <h3 class="text-xl font-semibold mb-2">Role</h3>
+        <p class="text-gray-400">Admin</p>
+      </div>
+      <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+
+    </div>
+  </div>
+  <div id="employees-content" class="hidden">
+    <!-- Placeholder for the employees table -->
+    <table class="rounded-lg overflow-hidden">
+      <thead class="bg-gray-100">
+      <tr>
+        <th class="text-left py-3 px-4 font-semibold">ID</th>
+        <th class="text-left py-3 px-4 font-semibold">Name</th>
+        <th class="text-left py-3 px-4 font-semibold">Position</th>
+        <th class="text-left py-3 px-4 font-semibold">Email</th>
+        <th class="text-left py-3 px-4 font-semibold">Password</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for employee in employees %}
+      <tr>
+        <td class="text-left py-3 px-4">{{ employee.id }}</td>
+        <td class="text-left py-3 px-4">{{ employee.name }}</td>
+        <td class="text-left py-3 px-4">{{ employee.role }}</td>
+        <td class="text-left py-3 px-4">{{ employee.email }}</td>
+        <td class="text-left py-3 px-4">{{ employee.password }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div id="add-task-content" class="hidden">
+    <div class="w-full max-w-xl mx-auto">
+      <form class="shadow-md rounded px-8 pt-6 pb-8 mb-4" action="{{ url_for('add_task') }}" method="post" style="background-color: rgb(42,47,46)">
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="employee_id">
+            Employee ID
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="employee_id"
+                  type="text"
+                  name="employee_id"
+                  placeholder="Employee ID"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="title">
+            Title
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="title"
+                  type="text"
+                  name="title"
+                  placeholder="Title"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="description">
+            Description
+          </label>
+          <textarea
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="description"
+                  name="description"
+                  placeholder="Description"
+          ></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="due_date">
+            Due Date
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="due_date"
+                  type="date"
+                  name="due_date"
+          />
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  type="submit"
+          >
+            Add Task
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <div id="add-employees-content" class="hidden">
+    <div class="w-full max-w-xl  mx-auto">
+      <form class="shadow-md rounded px-8 pt-6 pb-8 mb-4" style="background-color: #555555" method="post" action="/add_employee">
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="name">
+            Name
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="name"
+                  type="text"
+                  placeholder="Name"
+                  name="name"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="email">
+            Email
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="role">
+            Role
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="role"
+                  type="text"
+                  placeholder="Role"
+                  name="role"
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-sm font-bold mb-2" for="password">
+            Password
+          </label>
+          <input
+                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+          />
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  type="submit"
+          >
+            Add Employee
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+  <div id="add-admin-content" class="hidden">
+
+    <table class="rounded-lg overflow-hidden">
+      <thead class="bg-gray-100">
+      <tr>
+        <th class="text-left py-3 px-4 font-semibold">Employee ID</th>
+        <th class="text-left py-3 px-4 font-semibold">Name</th>
+        <th class="text-left py-3 px-4 font-semibold">Email</th>
+        <th class="text-left py-3 px-4 font-semibold">Due Date</th>
+        <th class="text-left py-3 px-4 font-semibold">Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for task in tasks %}
+      <tr>
+        <td class="text-left py-3 px-4">{{ task.employee.id }}</td>
+        <td class="text-left py-3 px-4">{{ task.employee.name }}</td>
+        <td class="text-left py-3 px-4">{{ task.employee.email }}</td>
+        <td class="text-left py-3 px-4">{{ task.due_date }}</td>
+        <td>
+          <form action="{{ url_for('send_email', task_id=task.id) }}" method="post">
+            <button class="send-email-button" type="submit">Send Email</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div id="add-news">
+    <button id="addEventButton" class="send-email-button">Add Event</button>
+    <br>
+
+    <div id="addEventForm" class="add-event-form">
+    <br>
+      <form action="{{ url_for('add_event') }}" method="post">
+        <label for="eventTitle">Title:</label>
+        <input type="text" id="eventTitle" name="eventTitle"><br><br>
+
+        <label for="eventDescription">Description:</label><br>
+        <textarea id="eventDescription" name="eventDescription" rows="4" cols="50"></textarea><br><br>
+
+        <label for="eventDate">Date:</label>
+        <input type="date" id="eventDate" name="eventDate"><br><br>
+
+        <label for="eventImageUrl">Image URL:</label>
+        <input type="url" id="eventImageUrl" name="eventImageUrl"><br><br>
+
+        <button type="submit">Share</button>
+      </form>
+    </div>
+    <br>
+    <table class="rounded-lg overflow-hidden">
+      <thead class="bg-gray-100">
+      <tr>
+        <th class="text-left py-3 px-4 font-semibold">Title</th>
+        <th class="text-left py-3 px-4 font-semibold">Description</th>
+        <th class="text-left py-3 px-4 font-semibold">Date</th>
+        <th class="text-left py-3 px-4 font-semibold">Image</th>
+        <th class="text-left py-3 px-4 font-semibold">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Loop through shared events and generate rows -->
+      {% for event in events %}
+      <tr>
+        <td class="text-left py-3 px-4">{{ event.title }}</td>
+        <td class="text-left py-3 px-4">{{ event.description }}</td>
+        <td class="text-left py-3 px-4">{{ event.date }}</td>
+        <td>
+          {% if event.image_url %}
+          <img src="{{ event.image_url }}" alt="{{ event.title }}" width="100">
+          {% else %}
+          No Image
+          {% endif %}
+        </td>
+        <td>
+          <form action="{{ url_for('delete_event', event_id=event.id) }}" method="post" class="send-email-button">
+            <button type="submit">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<script>
+  const addEventButton = document.getElementById('addEventButton');
+  const addEventForm = document.getElementById('addEventForm');
+
+  addEventButton.addEventListener('click', () => {
+    addEventForm.style.display = 'block';
+  });
+
+  setTimeout(function() {
+    const flashMessages = document.querySelectorAll('.message');
+    flashMessages.forEach(message => {
+      message.style.display = 'none';
+    });
+  }, 5000);
+
+  const sidebarLinks = document.querySelectorAll('#sidebar a');
+  const contentTitle = document.getElementById('content-title');
+  const dashboardContent = document.getElementById('dashboard-content');
+  const employeesContent = document.getElementById('employees-content');
+  const addTaskContent = document.getElementById('add-task-content');
+  const addEmployeesContent = document.getElementById('add-employees-content');
+  const addAdminContent = document.getElementById('add-admin-content');
+  const addNewsContent = document.getElementById('add-news');
+
+  // Detect when the user scrolls
+  window.addEventListener('scroll', function() {
+    const sidebar = document.getElementById('sidebar');
+    const addNewsSection = document.getElementById('add-news');
+
+    // Check if the sidebar is in view
+    const sidebarRect = sidebar.getBoundingClientRect();
+    if (sidebarRect.top <= window.innerHeight && sidebarRect.bottom >= 0) {
+      addNewsSection.style.display = 'block';
+    } else {
+      addNewsSection.style.display = 'none';
+    }
+  });
+
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      sidebarLinks.forEach(item => {
+        item.classList.remove('active');
+      });
+      link.classList.add('active');
+    });
+  });
+
+  // Handle sidebar navigation
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      sidebarLinks.forEach(item => item.classList.remove('active', 'bg-blue-500'));
+      link.classList.add('active', 'bg-blue-500');
+      const option = link.textContent.trim();
+      showContent(option);
+    });
+  });
+
+  function showContent(option) {
+    contentTitle.textContent = option;
+    hideAllContent();
+    if (option === 'Dashboard') {
+      dashboardContent.style.display = 'block';
+    } else if (option === 'Employees') {
+      employeesContent.style.display = 'block';
+    } else if (option === 'Add Task') {
+      addTaskContent.style.display = 'block';
+    } else if (option === 'Add Employees') {
+      addEmployeesContent.style.display = 'block';
+    } else if (option === 'View Tasks') {
+      addAdminContent.style.display = 'block';
+    } else if (option === 'Share News') {
+      addNewsContent.style.display = 'block';
+    }
+  }
+
+  // Function to hide all content areas
+  function hideAllContent() {
+    dashboardContent.style.display = 'none';
+    employeesContent.style.display = 'none';
+    addTaskContent.style.display = 'none';
+    addEmployeesContent.style.display = 'none';
+    addAdminContent.style.display = 'none';
+    addNewsContent.style.display = 'none';
+  }
+</script>
+
+
+</body>
+</html>

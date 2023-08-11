@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<title>CYB - Auth</title>
+<head>
+  <title>Authentication</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.56);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+      width: 400px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    input[type="password"] {
+      width: 95%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+    .message-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .message {
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.1);
+      background-color: #d36a6a;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .message p {
+      margin: 0;
+      padding: 5px 10px;}
+
+
+  </style>
+</head>
+<body style="background: #962d44">
+<div class="message-container" data-timeout="5000"> <!-- 5000 milliseconds = 5 seconds -->
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="message">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+</div>
+<div class="container">
+  <div class="card">
+    <h1>Authentication</h1>
+    <form action="/auth" method="post">
+      <label for="key">Secret Key:</label>
+      <input type="password" id="key" name="key" placeholder="Enter Secret Key" required>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</div>
+<script>
+  setTimeout(function() {
+    const flashMessages = document.querySelectorAll('.message');
+    flashMessages.forEach(message => {
+      message.style.display = 'none';
+    });
+  }, 5000);
+
+</script>
+</body>
+</html>

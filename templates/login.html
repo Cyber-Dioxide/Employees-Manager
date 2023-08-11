@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.2/tailwind.min.css">
+  <title>Login Form</title>
+  <style>
+    body {
+      background-color: rgb(246, 147, 129);
+    }
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-card {
+      background-color: rgba(255, 99, 71, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      width: 300px;
+    }
+    .login-card h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+    .login-button {
+      width: 100%;
+      padding: 10px;
+      background-color: #ff6347;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .login-button:hover {
+      background-color: #ff4e31;
+    }
+    .login-input::placeholder {
+      color: white;
+    }
+          .message-container {
+             position: fixed;
+             top: 20px;
+             right: 20px;
+             z-index: 9999;
+           }
+
+    .message {
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.1);
+      background-color: #d76b6b;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .message p {
+      margin: 0;
+      padding: 5px 10px;
+    }
+
+  </style>
+</head>
+<body style="background: #962d44">
+<div class="message-container" data-timeout="5000"> <!-- 5000 milliseconds = 5 seconds -->
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="message">
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% endwith %}
+</div>
+<div class="login-container">
+  <div class="login-card">
+    <h2>Login</h2>
+    <form method="post" action="/login">
+      <input type="text" class="login-input" placeholder="Email" name="email">
+      <input type="password" class="login-input" placeholder="Password" name="password">
+      <button type="submit" class="login-button">Login</button>
+    </form>
+  </div>
+  <script>
+    setTimeout(function() {
+      const flashMessages = document.querySelectorAll('.message');
+      flashMessages.forEach(message => {
+        message.style.display = 'none';
+      });
+    }, 5000);
+
+  </script>
+</div>
+</body>
+</html>

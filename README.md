@@ -39,4 +39,4 @@ Before running the app, configure the security and email parameters
 ![Screenshot 2023-08-11 103659](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/74d6e2d4-1d21-4aec-9b80-c72787cec218)
 
 # Question
-if you have any questions or you want the same app for your business with some modifications, reach me on Instagram or Telegram @coding_memz
+if you have any questions or you want the same app for your business with some modifications, reach me on Instagram or Telegram @cyberoxide

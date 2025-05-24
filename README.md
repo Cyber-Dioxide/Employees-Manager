@@ -38,5 +38,21 @@ A simple yet robust web app to assign tasks to a specif employee. This is a secu
 Before running the app, configure the security and email parameters
 ![Screenshot 2023-08-11 103659](https://github.com/Cyber-Dioxide/Employees-Manager/assets/93708296/74d6e2d4-1d21-4aec-9b80-c72787cec218)
 
+# 🙌 Donate to Support Development
+
+If you find this tool useful and want to support future updates, you can donate in crypto:
+
+    BTC: 364wCdw46JBGwtk674N4Cj87ErWNVTNvBc
+
+    ETH: 0x4d2c6d55a7ab2874ef5fd172d78da6e553ab9126
+
+    USDT (TRC20): TSgLpf9AawGLnHYRFhp5XqNgLVk7Y7kZBg
+
+    SOL: 3VGJAH5n8NJFKFoC4GPZWay8QJrL5upd33i7WHMpcGpv
+
+    LTC: MASRzRJPy9UxuagdXqzcY9N89NvPMUreNj
+
+Your support helps keep the project alive and free for everyone. Thank you!
+
 # Question
 if you have any questions or you want the same app for your business with some modifications, reach me on Instagram or [Telegram](https://www.cyberdioxide.com/p/contact.html)
